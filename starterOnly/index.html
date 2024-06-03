@@ -55,7 +55,7 @@
       <div class="content">
         <span class="close"></span>
         <div class="modal-body">
-          <form name="reserve" > <!-- action="index.html" method="get" onsubmit="validateForm();" -->
+          <form id="form" name="reserve"> <!-- action="index.html" method="get" onsubmit="validateForm();" -->
             <div class="formData">
               <label for="first">Prénom</label><br>
               <input class="text-control" type="text" id="first" name="first" minlength="2" /><br>
@@ -73,7 +73,8 @@
             </div>
             <div class="formData">
               <label for="birthdate">Date de naissance</label><br>
-              <input class="text-control" type="date" id="birthdate" name="birthdate" /><br>
+              <input class="text-control" type="date" id="birthdate" name="birthdate" required /><br>
+              <span id="birthdate-error" class="error-message"></span>
             </div>
             <div class="formData">
               <label for="quantity">À combien de tournois GameOn avez-vous déjà participé ?</label><br>
@@ -123,8 +124,10 @@
               <span id="notify-error" class="error-message"></span>
             </div>
             <!-- <input class="btn-submit" type="submit" value="C'est parti" /> -->
-            <button class="btn-submit" type="button" onclick="validateForm()">C'est parti</button>
+            <button id="btn-submit" class="btn-submit" type="button" onclick="validateForm()">C'est parti</button>
           </form>
+          <p id="confirmation"></p>
+          <button id="btn-close" class="btn-submit" type="button">Fermer</button>
         </div>
       </div>
     </div>

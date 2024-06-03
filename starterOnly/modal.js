@@ -74,6 +74,28 @@ function validateForm(event) {
     emailError.textContent = '';
   }
 
+  // Validation de la date de naissance
+  const birthdate = document.getElementById('birthdate');
+  const birthdateError = document.getElementById('birthdate-error');
+  // si la date de naissance est vide
+  if (birthdate.value.length < 1) {
+    birthdateError.textContent = 'Veuillez entrer votre date de naissance.';
+    isValid = false;
+  }
+
+  // la date de naissance doit être au moins 13 ans et ne doit pas être dans le futur
+  const date = new Date();
+  const currentYear = date.getFullYear();
+  const birthdateYear = new Date(birthdate.value).getFullYear();
+  if (birthdate.value.length > 1) {
+    if (currentYear - birthdateYear < 13 || new Date(birthdate.value) > date) {
+      birthdateError.textContent = 'Vous devez avoir au moins 13 ans pour vous inscrire.';
+      isValid = false;
+    } else {
+      birthdateError.textContent = '';
+    }
+  }
+
   // Validation de la quantité
   const quantity = document.getElementById('quantity');
   const quantityError = document.getElementById('quantity-error');
@@ -107,9 +129,34 @@ function validateForm(event) {
   if (!checkbox1.checked) {
     privacyError.textContent = 'Vous devez accepter les conditions d\'utilisation.';
     isValid = false;
-  }else {
+  } else {
     privacyError.textContent = '';
   }
 
-  return isValid;
+
+
+  if (isValid) {
+    const data = {
+      first: first.value,
+      last: last.value,
+      email: email.value,
+      birthdate: birthdate.value,
+      quantity: quantity.value,
+      location: locationChecked,
+      privacy: checkbox1.checked
+    };
+    const form = document.getElementById('form');
+    form.style.display = 'none';
+    const confirmation = document.getElementById('confirmation');
+    confirmation.textContent = `Merci pour votre inscription ${data.first} ${data.last} !`;
+    // positionner au centre 
+    confirmation.style.display = 'flex';
+    confirmation.style.justifyContent = 'center';
+    confirmation.style.alignItems = 'center';
+
+    const btnSubmit = document.getElementById('btn-close');
+    btnSubmit.addEventListener('click', closeModal);
+  }
+
+  return null;
 }

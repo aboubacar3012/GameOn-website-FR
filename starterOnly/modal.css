@@ -594,3 +594,10 @@ footer {
   margin-top: 5px;
   margin-bottom: 5px;
 }
+
+#confirmation {
+  color: green;
+  font-size: 18px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
