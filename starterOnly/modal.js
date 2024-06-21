@@ -1,162 +1,219 @@
-function editNav() {
+/********* DOM ELEMENTS *********/
+const modalbg = document.querySelector(".bground");
+const modalbgValidate = document.querySelector(".bground__validate");
+const modalBtn = document.querySelectorAll(".modal-btn");
+const form = document.getElementById("myForm");
+const formData = document.querySelectorAll(".formData");
+const modalCloseBtn = document.querySelectorAll(".close");
+const icon = document.querySelector(".icon");
+const btnClose = document.querySelector(".btn-close");
+const linkActive = document.querySelectorAll(".link__active");
+
+const firstName = document.getElementById("first");
+const lastName = document.getElementById("last");
+const email = document.getElementById("email");
+const birthdate = document.getElementById("birthdate");
+const quantity = document.getElementById("quantity");
+const radioInput = document.querySelectorAll("input[type=radio]");
+const checkbox1 = document.getElementById("checkbox1");
+
+/********* REGEX ELEMENTS *********/
+const regexName = /^[a-zA-Z\s\-À-ÖØ-öø-ÿ]+$/;
+const regexEmail = /^((?!\.)[\w_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/;
+const regexBirthdate = /^[0-9]{4}[-]{1}[0-9]{2}[-]{1}[0-9]{2}$/;
+const regexQuantity = /^0*?[0-9]\d*$/;
+
+/********* EVENTS *********/
+// Change class active
+linkActive.forEach((a) => a.addEventListener("click", changeClassActive));
+
+// Launch modal event
+modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
+
+// Close modal event : cross
+modalCloseBtn.forEach((btn) => btn.addEventListener("click", closeModal));
+
+// Close modal event : btn
+btnClose.addEventListener("click", closeModal);
+
+/******** FUNCTIONS ********/
+// FUNCTION EDIT NAV (media querie)
+icon.addEventListener("click", function () {
   var x = document.getElementById("myTopnav");
   if (x.className === "topnav") {
     x.className += " responsive";
   } else {
     x.className = "topnav";
   }
+});
+
+// FUNCTION CHANGE CLASS ACTIVE ON NAV LINKS
+function changeClassActive() {
+  linkActive.forEach((a) => a.classList.remove("active"));
+  this.classList.add("active");
 }
 
-// DOM Elements
-const modalbg = document.querySelector(".bground");
-const modalBtn = document.querySelectorAll(".modal-btn");
-const closeBtn = document.querySelectorAll(".close");
-const formData = document.querySelectorAll(".formData");
-
-// launch modal event
-modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
-// Close modal event
-closeBtn.forEach((btn) => btn.addEventListener("click", closeModal));
-
-
-// launch modal form
-function launchModal() {
+// FUNCTION LAUNCH MODAL FORM AND MESSAGE OF VALIDATION
+function launchModal() { // Form
   modalbg.style.display = "block";
 }
 
-// Close modal event
+function launchModalValidate() { // Message validation
+  modalbgValidate.style.display = "block";
+}
+
+// FUNCTION CLOSE MODAL FORM AND MESSAGE OF VALIDATION
 function closeModal() {
   modalbg.style.display = "none";
+  modalbgValidate.style.display = "none";
 }
 
-
-// Form validation
-// const submitBtn = document.getElementById('submit');
-// submitBtn.addEventListener('click', function (event) {
-//   if (validateForm(event)) {
-//     alert('Merci pour votre inscription !');
-//     closeModal();
-//   }
-// }
-// );
-function validateForm(event) {
-
-  let isValid = true;
-
-  // Validation du prénom
-  const first = document.getElementById('first');
-  const firstError = document.getElementById('first-error');
-  if (first.value.trim().length < 2) {
-    firstError.textContent = 'Le prénom doit contenir au moins 2 caractères.';
-    isValid = false;
+// FUNCTIONS VALIDATION FORM
+// Function verification Firstname
+function checkFirstNameInput(firstName) {
+  if (firstName.value.length >= 2 && firstName.value.length <= 100 && regexName.test(firstName.value)) {
+    formData[0].setAttribute("data-error-visible", "false");
+    return true;
+  } else if (firstName.value.length < 2 && regexName.test(firstName.value)) {
+    formData[0].setAttribute("data-error-visible", "true");
+    formData[0].setAttribute("data-error", "Veuillez entrer 2 caractères ou plus pour le champ du prénom.");
+    return false;
+  } else if (firstName.value.length > 100 && regexName.test(firstName.value)) {
+    formData[0].setAttribute("data-error-visible", "true");
+    formData[0].setAttribute("data-error", "Ce champ ne peut pas contenir plus de 100 caractères.");
+    return false;
   } else {
-    firstError.textContent = '';
+    formData[0].setAttribute("data-error-visible", "true");
+    formData[0].setAttribute("data-error", "Veuillez entrer votre prénom.");
+    return false;
   }
-
-  // Validation du nom
-  const last = document.getElementById('last');
-  const lastError = document.getElementById('last-error');
-  if (last.value.trim().length < 2) {
-    lastError.textContent = 'Le nom doit contenir au moins 2 caractères.';
-    isValid = false;
-  } else {
-    lastError.textContent = '';
-  }
-
-  // Validation de l'email
-  const email = document.getElementById('email');
-  const emailError = document.getElementById('email-error');
-  const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-  if (!emailPattern.test(email.value)) {
-    emailError.textContent = 'Veuillez entrer une adresse e-mail valide.';
-    isValid = false;
-  } else {
-    emailError.textContent = '';
-  }
-
-  // Validation de la date de naissance
-  const birthdate = document.getElementById('birthdate');
-  const birthdateError = document.getElementById('birthdate-error');
-  // si la date de naissance est vide
-  if (birthdate.value.length < 1) {
-    birthdateError.textContent = 'Veuillez entrer votre date de naissance.';
-    isValid = false;
-  }
-
-  // la date de naissance doit être au moins 13 ans et ne doit pas être dans le futur
-  const date = new Date();
-  const currentYear = date.getFullYear();
-  const birthdateYear = new Date(birthdate.value).getFullYear();
-  if (birthdate.value.length > 1) {
-    if (currentYear - birthdateYear < 13 || new Date(birthdate.value) > date) {
-      birthdateError.textContent = 'Vous devez avoir au moins 13 ans pour vous inscrire.';
-      isValid = false;
-    } else {
-      birthdateError.textContent = '';
-    }
-  }
-
-  // Validation de la quantité
-  const quantity = document.getElementById('quantity');
-  const quantityError = document.getElementById('quantity-error');
-  if (quantity.value === '' || isNaN(quantity.value) || quantity.value < 0 || quantity.value > 99) {
-    quantityError.textContent = 'Veuillez entrer un nombre valide entre 0 et 99.';
-    isValid = false;
-  } else {
-    quantityError.textContent = '';
-  }
-
-  // Validation des boutons radio
-  const location = document.getElementsByName('location');
-  const locationError = document.getElementById('location-error');
-  let locationChecked = false;
-  for (let i = 0; i < location.length; i++) {
-    if (location[i].checked) {
-      locationChecked = true;
-      break;
-    }
-  }
-  if (!locationChecked) {
-    locationError.textContent = 'Veuillez sélectionner un tournoi.';
-    isValid = false;
-  } else {
-    locationError.textContent = '';
-  }
-
-  // Validation de la case à cocher des conditions d'utilisation
-  const privacyError = document.getElementById('privacy-error');
-  const checkbox1 = document.getElementById('checkbox1');
-  if (!checkbox1.checked) {
-    privacyError.textContent = 'Vous devez accepter les conditions d\'utilisation.';
-    isValid = false;
-  } else {
-    privacyError.textContent = '';
-  }
-
-
-
-  if (isValid) {
-    const data = {
-      first: first.value,
-      last: last.value,
-      email: email.value,
-      birthdate: birthdate.value,
-      quantity: quantity.value,
-      location: locationChecked,
-      privacy: checkbox1.checked
-    };
-    const form = document.getElementById('form');
-    form.style.display = 'none';
-    const confirmation = document.getElementById('confirmation');
-    confirmation.textContent = `Merci pour votre inscription ${data.first} ${data.last} !`;
-    // positionner au centre 
-    confirmation.style.display = 'flex';
-    confirmation.style.justifyContent = 'center';
-    confirmation.style.alignItems = 'center';
-
-    const btnSubmit = document.getElementById('btn-close');
-    btnSubmit.addEventListener('click', closeModal);
-  }
-
-  return null;
 }
+
+// Function verification Lastname
+function checkLastNameInput(lastName) {
+  if (lastName.value.length >= 2 && lastName.value.length <= 100 && regexName.test(lastName.value)) {
+    formData[1].setAttribute("data-error-visible", "false");
+    return true;
+  } else if (lastName.value.length < 2 && regexName.test(lastName.value)) {
+    formData[1].setAttribute("data-error-visible", "true");
+    formData[1].setAttribute("data-error", "Veuillez entrer 2 caractères ou plus pour le champ du nom.");
+    return false;
+  } else if (lastName.value.length > 100 && regexName.test(lastName.value)) {
+    formData[1].setAttribute("data-error-visible", "true");
+    formData[1].setAttribute("data-error", "Ce champ ne peut pas contenir plus de 100 caractères.");
+    return false;
+  } else {
+    formData[1].setAttribute("data-error-visible", "true");
+    formData[1].setAttribute("data-error", "Veuillez entrer votre nom.");
+    return false;
+  }
+}
+
+// Function verification Email
+function checkEmailInput(email) {
+  if (regexEmail.test(email.value)) {
+    formData[2].setAttribute("data-error-visible", "false");
+    return true;
+  } else {
+    formData[2].setAttribute("data-error-visible", "true");
+    formData[2].setAttribute("data-error", "Vous devez saisir une adresse mail.");
+    return false;
+  }
+}
+
+// Function verification Birthdate
+function checkBirthdateInput(birthdate) {
+  const today = new Date();
+  const yearMinimum = today.getFullYear() - 18; // age minimum 18 years
+  const yearMaximum = today.getFullYear() - 80; // age maximum 80 years
+  const birthdatePlayer = new Date(birthdate.value); // converts the value of the input birthdate to date
+  const yearPlayer = birthdatePlayer.getFullYear(); // recovers the user's year of birth
+  if (regexBirthdate.test(birthdate.value) && yearPlayer < yearMinimum && yearPlayer > yearMaximum) {
+    formData[3].setAttribute("data-error-visible", "false");
+    return true;
+  } else if (regexBirthdate.test(birthdate.value) && yearPlayer > yearMinimum) {
+    formData[3].setAttribute("data-error-visible", "true");
+    formData[3].setAttribute("data-error", "Vous devez avoir plus de 18 ans.");
+    return false;
+  } else if (regexBirthdate.test(birthdate.value) && yearPlayer < yearMaximum) {
+    formData[3].setAttribute("data-error-visible", "true");
+    formData[3].setAttribute("data-error", "Vous êtes un peu trop âgé pour participer à notre événement!");
+    return false;
+  } else {
+    formData[3].setAttribute("data-error-visible", "true");
+    formData[3].setAttribute("data-error", "Vous devez entrer votre date de naissance.");
+    return false;
+  }
+}
+
+// Function verification Number
+function checkQuantityInput(quantity) {
+  if (regexQuantity.test(quantity.value) && quantity.value >= 0 && quantity.value <= 99) {
+    formData[4].setAttribute("data-error-visible", "false");
+    return true;
+  }
+  if (regexQuantity.test(quantity.value) && quantity.value > 100) {
+    formData[4].setAttribute("data-error-visible", "true");
+    formData[4].setAttribute("data-error", "Vous devez entrer un nombre compris entre 0 et 99.");
+    return false;
+  } else {
+    formData[4].setAttribute("data-error-visible", "true");
+    formData[4].setAttribute("data-error", "Vous devez entrer un nombre.");
+    return false;
+  }
+}
+
+// Function verification Radio
+function checkRadioInput(radioInput) {
+  let checkRadioValid = 0;
+  radioInput.forEach((location) => { // look if a button is checked
+    if (location.checked) {
+      checkRadioValid = 1;
+    }
+  });
+  if (checkRadioValid === 0) {
+    formData[5].setAttribute("data-error-visible", "true");
+    formData[5].setAttribute("data-error", "Vous devez choisir une ville.");
+    return false;
+  } else {
+    formData[5].setAttribute("data-error-visible", "false");
+    return true;
+  }
+}
+
+// Function verification Checkbox - Conditions générales
+function checkBoxInput(checkbox1) {
+  if (checkbox1.checked) {
+    formData[6].setAttribute("data-error-visible", "false");
+    return true;
+  } else {
+    formData[6].setAttribute("data-error-visible", "true");
+    formData[6].setAttribute("data-error", "Vous devez vérifier que vous acceptez les termes et conditions.");
+    return false;
+  }
+}
+
+// Function submit form
+addEventListener("submit", (e) => { //on submit, verify if the functions of verification are true
+  e.preventDefault(); // if it's true, the form is reset and closed and the message of validation appears
+  checkFirstNameInput(firstName);
+  checkLastNameInput(lastName);
+  checkEmailInput(email);
+  checkBirthdateInput(birthdate);
+  checkQuantityInput(quantity);
+  checkRadioInput(radioInput);
+  checkBoxInput(checkbox1);
+  if (
+    checkFirstNameInput(firstName) &&
+    checkLastNameInput(lastName) &&
+    checkEmailInput(email) &&
+    checkBirthdateInput(birthdate) &&
+    checkQuantityInput(quantity) &&
+    checkRadioInput(radioInput) &&
+    checkBoxInput(checkbox1) === true
+  ) {
+    form.reset();
+    closeModal();
+    launchModalValidate();
+  }
+});
