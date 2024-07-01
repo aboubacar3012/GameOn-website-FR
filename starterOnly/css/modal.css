@@ -153,7 +153,6 @@ main {
 }
 
 /* Modal form */
-
 .button {
   background: #fe142f;
   margin-top: 0.5em;
@@ -461,6 +460,7 @@ input[data-error]::after {
   min-width: 424px;
 }
 
+
 .hero-content::after {
   content: "";
   width: 100%;
@@ -584,7 +584,6 @@ footer {
     opacity: 1;
   }
 }
-
 
 
 /* Added */

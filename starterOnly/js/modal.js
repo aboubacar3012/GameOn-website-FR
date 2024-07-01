@@ -212,6 +212,15 @@ addEventListener("submit", (e) => { //on submit, verify if the functions of veri
     checkRadioInput(radioInput) &&
     checkBoxInput(checkbox1) === true
   ) {
+    console.log({
+      firstName: firstName.value,
+      lastName: lastName.value,
+      email: email.value,
+      birthdate: birthdate.value,
+      quantity: quantity.value,
+      radioInput: radioInput.value,
+      checkbox1: checkbox1.checked,
+    })
     form.reset();
     closeModal();
     launchModalValidate();
