@@ -18,10 +18,10 @@ const radioInput = document.querySelectorAll("input[type=radio]");
 const checkbox1 = document.getElementById("checkbox1");
 
 /********* REGEX ELEMENTS *********/
-const regexName = /^[a-zA-Z\s\-À-ÖØ-öø-ÿ]+$/;
-const regexEmail = /^((?!\.)[\w_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/;
-const regexBirthdate = /^[0-9]{4}[-]{1}[0-9]{2}[-]{1}[0-9]{2}$/;
-const regexQuantity = /^0*?[0-9]\d*$/;
+const regexName = /^[a-zA-Z\s\-À-ÖØ-öø-ÿ]+$/; // permet de vérifier si le prénom et le nom sont composés de lettres, d'espaces et de tirets
+const regexEmail = /^((?!\.)[\w_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/; // permet de vérifier si l'email est au format
+const regexBirthdate = /^[0-9]{4}[-]{1}[0-9]{2}[-]{1}[0-9]{2}$/; // permet de vérifier si la date de naissance est au format YYYY-MM-DD
+const regexQuantity = /^0*?[0-9]\d*$/; // permet de vérifier si la quantité est un nombre entier positif
 
 /********* EVENTS *********/
 // Change class active
